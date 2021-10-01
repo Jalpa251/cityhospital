@@ -8,23 +8,25 @@ import { Button, Form, Input } from 'reactstrap';
 function Addmedicine(props) {
     const [inputField, setinputField] = useState([
         { name: '', price: '', quantity: '', expiry: '' }]);
-       const [editData,seteditData] = useState()
+    const [editData, seteditData] = useState({})
 
-       
-       console.log(props.updateProps)
-        
-useEffect(
-    () =>{
-        seteditData(props.updateProps)
-    }
-,[props.updateProps])
+
+    // console.log(props.updateProps)
+
+    useEffect(
+        () => {
+            seteditData(props.updateProps)
+        }
+        , [props.updateProps])
 
     const handleSubmit = (e) => {
-    
-    
+
+
         e.preventDefault()
 
         const values = [...inputField]
+
+        // console.log(values)
 
         // localStorage.removeItem('medicine')
         let medicineData = JSON.parse(localStorage.getItem('medicine'))
@@ -37,32 +39,37 @@ useEffect(
 
         // console.log(medicineData[medicineData.length-1].id+1)
 
-        let n = (medicineData[medicineData.length-1].id+1)
-        
-        let s = values.map((d)=>({...d, "id": n++}))
-        // console.log(s)
-        
-        s.map((v)=>medicineData.push(v))
-        
-         console.log(medicineData)
+        let n = (medicineData[medicineData.length - 1].id + 1)
 
-         setinputField([{ name: '', price: '', quantity: '', expiry: '' }])
-        
-       
-        
-         localStorage.setItem('medicine',JSON.stringify(medicineData))
-         
-        let  localmedicineData = medicineData
+        let s = values.map((d) => ({ ...d, "id": n++ }))
+        // console.log(s)
+
+        s.map((v) => medicineData.push(v))
+
+        // console.log(medicineData)
+
+        setinputField([{ name: '', price: '', quantity: '', expiry: '' }])
+
+
+
+        localStorage.setItem('medicine', JSON.stringify(medicineData))
+
+        let localmedicineData = medicineData
         // localmedicineData  = JSON.parse(medicineData)
-         console.log(localmedicineData)
-         
-         props.renderProps()
+        console.log(localmedicineData)
+
+        props.renderProps()
+
+        alert("data is successfully added")
+
+        // seteditData({})
 
     }
     const handleinputField = (e, index) => {
+        console.log("handleinputField")
         const values = [...inputField]
 
-         if(e.target.name == "name") {
+        if (e.target.name == "name") {
             values[index].name = e.target.value
         } else if (e.target.name == "price") {
             values[index].price = parseInt(e.target.value)
@@ -78,28 +85,55 @@ useEffect(
         // console.log("ok")
         const values = [...inputField]
 
-       
-
-        values.splice(index+1,0,{ name: '', price: '', quantity: '', expiry: '' })
+        values.splice(index + 1, 0, { name: '', price: '', quantity: '', expiry: '' })
         setinputField(values)
 
     }
     const removeinputField = (index) => {
         // console.log("okeremove")
         const values = [...inputField]
+       
+        if (index !== 0) {
+            values.splice(index, 1)
+        }
 
-        values.splice(index, 1)
+
         setinputField(values)
     }
 
-    const handleEdit = (e)=>{
-        const values = [...inputField]
+    const handleEdit = (e) => {
+        // console.log("handleEdit")
+        // const values = [...inputField]
 
-        seteditData(values => ({ ...values, [e.target.name]: e.target.value }))
-         console.log(console.log(e.target.name + e.target.value))
-
-         setinputField(values)
+        seteditData(values => ({ ...values, [e.target.name]: e.target.name === "name" ? e.target.value : parseInt(e.target.value) }))
     }
+
+    // console.log(editData)
+
+    const handleEditSubmit = () => {
+        // console.log(editData)
+
+        let localmedicineData = JSON.parse(localStorage.getItem('medicine'))
+        console.log(localmedicineData)
+
+        let afterEdit = localmedicineData.map((l) => {
+            if (editData.id === l.id) {
+                return editData
+            }
+            return l
+        })
+
+        localStorage.removeItem('medicine')
+        localStorage.setItem('medicine', JSON.stringify(afterEdit))
+        // console.log(afterEdit)
+
+        props.renderProps()
+
+        alert("update successfully")
+
+    }
+
+
 
     return (
         <div>
@@ -108,52 +142,68 @@ useEffect(
                     <div className="section-title">
                         <h2>Add medicine</h2>
                     </div>
-                    <Form method="post" onSubmit={(e) => handleSubmit(e)}>
-                        {
-                            inputField.map((inputField, index) => {
 
-                                return (
-                                    
-                                    <div className="row">
+                    {
+                        inputField.map((inputField, index) => {
 
-                                        <div className="col-2">
-                                            <Input type="text" name="name" placeholder="name" 
-                                            
+                            return (
+
+                                <div className="row">
+
+                                    <div className="col-2">
+                                        <Input type="text" name="name" placeholder="name"
+
                                             // {setedit?value={props.updateProps.name}:value={inputField.name} }
-                                            value={editData && index==[0]? editData.name : inputField.name} 
-                                            onChange={(e) => handleinputField(e, index)} />
-                                        </div>
-                                        <div className="col-2">
-                                            <Input type="text" name="price" placeholder="price" 
-                                            value={editData && index==[0]? editData.price : inputField.price}
-                                            onChange={(e) => handleinputField(e, index)} />
-                                        </div>
-                                        <div className="col-2">
-                                            <Input type="text" name="quantity" placeholder="quantity" 
-                                            value={editData && index==[0]? editData.quantity : inputField.quantity}
-                                            onChange={(e) => handleinputField(e, index)} />
-                                        </div>
-                                        <div className="col-2">
-                                            <Input type="text" name="expiry" placeholder="expiry" 
-                                            value={editData && index==[0]? editData.expiry : inputField.expiry}  
-                                            onChange={(e) => handleinputField(e, index)} />
-                                        </div>
-                                        <div className="col-2">
-                                            <Button style={{marginRight:'10px'}} onClick={() => addInputfield(index)} >+</Button>
-                                            <Button onClick={() => removeinputField(index)}>-</Button>
-                                        </div>
-                                        
-                                        
+                                            value={editData.name && index == [0] ? editData.name : inputField.name}
+                                            onChange={(e) => { editData.name ? handleEdit(e) : handleinputField(e, index) }}
+                                        />
+                                    </div>
+                                    <div className="col-2">
+                                        <Input type="text" name="price" placeholder="price"
+                                            value={editData.price && index == [0] ? editData.price : inputField.price}
+                                            onChange={(e) => { editData.price ? handleEdit(e) : handleinputField(e, index) }} />
+                                    </div>
+                                    <div className="col-2">
+                                        <Input type="text" name="quantity" placeholder="quantity"
+                                            value={editData.quantity && index == [0] ? editData.quantity : inputField.quantity}
+                                            onChange={(e) => { editData.quantity ? handleEdit(e) : handleinputField(e, index) }} />
+                                    </div>
+                                    <div className="col-2">
+                                        <Input type="text" name="expiry" placeholder="expiry"
+                                            value={editData.expiry && index == [0] ? editData.expiry : inputField.expiry}
+                                            onChange={(e) => { editData.expiry ? handleEdit(e) : handleinputField(e, index) }} />
                                     </div>
 
-                                )
-                               
-                            })
-                           
-                        }
-                         <Button type="submit" className="text-align-center" style={{marginTop:'10px'}}>Submit</Button>
-                    </Form>
-                    
+                                    <div className="col-2">
+                                        {
+                                            Object.keys(props.updateProps).length > 0 ?
+                                                <>
+                                                    <Button style={{ marginRight: '10px' }, { display: 'none' }} onClick={() => { addInputfield(index); }} >+</Button>
+                                                    <Button style={{ display: 'none' }} onClick={() => removeinputField(index)}>-</Button>
+                                                </>
+                                                :
+                                                <>
+                                                    <Button style={{ marginRight: '10px' }} onClick={() => { addInputfield(index); }} >+</Button>
+                                                    <Button onClick={() => removeinputField(index)}>-</Button>
+                                                </>
+                                        }
+                                    </div>
+                                </div>
+
+                            )
+
+                        })
+
+                    }
+                    {
+
+                        Object.keys(props.updateProps).length > 0 ?
+                            <Button onClick={(e) => { handleEditSubmit(e); seteditData(true) }} style={{ marginTop: '10px' }}>Update</Button>
+
+                            :
+                            <Button onClick={(e) => handleSubmit(e)} style={{ marginTop: '10px' }}> Submit</Button>
+                    }
+
                 </div>
             </section>
         </div>

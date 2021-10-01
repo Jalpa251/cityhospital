@@ -1,5 +1,5 @@
 import React from 'react';
-import { FaHandHolding } from 'react-icons/fa';
+import { FaExclamationTriangle, FaHandHolding } from 'react-icons/fa';
 import {
     Card, CardImg, CardText, CardBody,
     CardTitle, CardSubtitle, Button
@@ -19,7 +19,7 @@ function List(props) {
                             </CardSubtitle>
                             :
                             <CardSubtitle tag="h6" className="mb-2 text-muted">
-                             Age:{props.age}
+                             Email:{props.email}
                             </CardSubtitle>
                         }
                         {
@@ -33,9 +33,14 @@ function List(props) {
                             props.expiry != undefined?
                             <CardText>Expiry:{props.expiry}</CardText>
                             :
-                            <CardText>Disease:{props.disease}</CardText>
+                            <CardText>Date:{props.Date}</CardText>
 
                         }
+                        
+                            
+                            {/* <CardText>Department:{props.Department}</CardText>
+                            <CardText>Message:{props.Message}</CardText>
+                         */}
                         {
                             props.onDelete != undefined?
                             <Button style={{marginRight:'10px'}} onClick={()=>props.onDelete() }>Delete</Button>

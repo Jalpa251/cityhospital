@@ -36,10 +36,11 @@ function Header(props) {
                                 <li><NavLink className="nav-link scrollto"  to="/contact">Contact</NavLink></li>
                                 <li><NavLink className="nav-link scrollto"  to="/medicine">Medicine</NavLink></li>
                                 <li><NavLink className="nav-link scrollto" to="/patient">Patient</NavLink></li>
+                                
                             </ul>
                             <i className="bi bi-list mobile-nav-toggle" />
                         </nav>
-                        <NavLink to="/appointment" className="appointment-btn scrollto"><span className="d-none d-md-inline">Make an</span>
+                        <NavLink to="/addappointment" className="appointment-btn scrollto"><span className="d-none d-md-inline">Manage an</span>
                             Appointment</NavLink>
                         <NavLink to="/login" className="appointment-btn scrollto">
                             <span className="d-none d-md-inline">Login/ Signup</span>

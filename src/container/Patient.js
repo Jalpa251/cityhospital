@@ -34,8 +34,8 @@ import Addpatient from './Addpatient';
 function Patient(props) {
 // const [ render,setRerender] = useState ({})
 localStorage.removeItem('patient')
-// let  localpatientData =  JSON.parse(localStorage.getItem('patient'))
-// console.log(localpatientData)
+let  localpatientData =  JSON.parse(localStorage.getItem('patient'))
+console.log(localpatientData)
 
 // const handleReRender =()=>{
 //     setRerender({})
@@ -53,9 +53,9 @@ localStorage.removeItem('patient')
                         {/* <Addpatient rerenderprops={()=>handleReRender()}/> */}
                         {/* <div className="text-center"><NavLink to="/addpatient">addpatient</NavLink></div>  */}
 
-                          {/* {
+                         {/* {
                             localpatientData.map((p)=><List name={p.name} age={p.age} phone={p.phone} disease={p.disease}/>)
-                        }    */}
+                        }     */}
                     </div>
                 </div>
             </section>

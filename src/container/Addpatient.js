@@ -40,41 +40,29 @@ function Addpatient(props) {
     const handleSubmit = () => {
         console.log("ok")
         const oldData = [...inputField]
-// localStorage.removeItem('patient')
+localStorage.removeItem('patient')
     let patientData =  JSON.parse(localStorage.getItem('patient'))
     console.log(patientData)
         console.log(patientData)
+        console.log(patientData.length)
 
-        localStorage.setItem('patient',JSON.stringify(oldData))
+        let n = (patientData.length+100)
+        console.log(n)
+         let s = oldData.map((d)=>({...d,"id":n++}))
+         console.log(s)
+// localStorage.removeItem('patient')
+        s.map((v)=>patientData.push(v))
 
-       let localpatientData = oldData
+        localStorage.removeItem('patient')
+        localStorage.setItem('patient',JSON.stringify(patientData))
+
+       let localpatientData = patientData
 
        localpatientData = JSON.parse(patientData)
-    //    console.log(localpatientData.length)
+       console.log(localpatientData)
 
 
-    //     localStorage.removeItem('patient')
-    //     let patientData = JSON.parse( localStorage.getItem('patient'))
-    //     // console.log(patientData)
-    //     // console.log(patientData.length)
-   
-    //     let n = (patientData.length+100)
-    //     console.log(n)
-    //     let s = oldData.map((d)=>({...d, "id": n++}))
-    //     //  console.log(s) 
 
-    //      s.map((v)=>patientData.push(v))
-    //     //  console.log(patientData)
-        
-    //     localStorage.removeItem('patient')
-    //      localStorage.setItem('patient', JSON.stringify(patientData))
-    // //    console.log(oldData)
-    //    let localpatientData = oldData
-
-    //     localpatientData = JSON.parse(patientData)
-    //     console.log(localpatientData)
-       
-        // props.rerenderprops()
     }
 
     return (

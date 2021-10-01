@@ -17,13 +17,14 @@ function Login(props) {
                 <div className="container">
                     <div className="section-title">
 
-                        {reset == true ?
-                            <h2>Reset Password</h2>
-                            :
-                            type === 'login' ?
-                                <h2>Login</h2>
+                        {
+                            reset == true ?
+                                <h2>Reset Password</h2>
                                 :
-                                <h2>Signup</h2>
+                                type === 'login' ?
+                                    <h2>Login</h2>
+                                    :
+                                    <h2>Signup</h2>
                         }
 
                         <div action method="post" role="form" className="php-email-form align-item-center">
@@ -38,21 +39,21 @@ function Login(props) {
                                 }
                                 {
                                     reset == true ?
-                                    <div className="col-md-7 form-group mt-3 mt-md-0">
-                                    <input type="password" className="form-control" name="password" id="password" placeholder="Your password" required onChange={(e) => setpassword(e.target.value)} />
-                                </div>
+                                        <div className="col-md-7 form-group mt-3 mt-md-0">
+                                            <input type="password" className="form-control" name="password" id="password" placeholder="Your password" required onChange={(e) => setpassword(e.target.value)} />
+                                        </div>
                                         :
                                         <div>
                                             <div className="col-md-7 form-group">
                                                 <input type="text" name="email" className="form-control" id="email" placeholder="Your email" required onChange={(e) => setemail(e.target.value)} />
                                             </div>
                                             <div className="col-md-7 form-group mt-3 mt-md-0">
-                                            <input type="password" className="form-control" name="password" id="password" placeholder="Your password" required onChange={(e) => setpassword(e.target.value)} />
-                                        </div>
+                                                <input type="password" className="form-control" name="password" id="password" placeholder="Your password" required onChange={(e) => setpassword(e.target.value)} />
+                                            </div>
                                         </div>
                                 }
                                 {
-                                    type === 'login' && reset == false?
+                                    type === 'login' && reset == false ?
                                         < div >
                                             <button to=" " onClick={() => setreset(true)} className="btn btn-link">Forgot password </button>
                                         </div>
@@ -72,10 +73,10 @@ function Login(props) {
                                             </div>
                                             :
                                             <div>
-                                                 <div>
-                                                <div className="text-center"><button type="submit" onClick={() => handlesignup()}>Signup</button></div>
-                                                <p>Already have an account<button to="" onClick={() => setType('login')} className="btn btn-link"> Login </button></p>
-                                            </div>
+                                                <div>
+                                                    <div className="text-center"><button type="submit" onClick={() => handlesignup()}>Signup</button></div>
+                                                    <p>Already have an account<button to="" onClick={() => setType('login')} className="btn btn-link"> Login </button></p>
+                                                </div>
                                             </div>
                                 }
 

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 
-function Appointment(props) {
+function Addappointment(props) {
     const [values, setvalues] = useState({})
     const [Error, setError] = useState({})
     let nameErr = true;
@@ -90,6 +90,27 @@ function Appointment(props) {
     const submitData = (e) => {
         e.preventDefault()
 
+        console.log(values)
+
+        let appointmentData = values
+        console.log(appointmentData)
+
+        let arrayAppointment = Object.fromEntries(appointmentData)
+        console.log(arrayAppointment)
+
+        let localAppointment = localStorage.getItem('appointment')
+        // console.log(setAppointment)
+
+        localStorage.setItem('appointment', JSON.stringify(appointmentData))
+
+        let setAppointment = appointmentData
+
+        setAppointment = JSON.parse(localAppointment)
+
+        console.log(setAppointment)
+
+        
+
         let isValid = validation()
         if (values.name == undefined) {
             setError(Error => ({ ...Error, name: "please enter your name." }))
@@ -136,14 +157,13 @@ function Appointment(props) {
         , [values])
 
 
-
     return (
         <div>
             <section id="appointment" className="appointment">
                 <div className="container">
                     <div className="section-title">
                         <h2>Manage an Appointment</h2>
-                        <NavLink to="addappointment" style={{paddingRight:'30px'}}>Addappointment</NavLink>
+                        <NavLink to="addappointment" style={{ paddingRight: '30px' }}>Addappointment</NavLink>
                         <NavLink to="appointmentlist">AppointmentList</NavLink>
                         <p>Aenean enim orci, suscipit vitae sodales ac, semper in ex. Nunc aliquam eget nibh eu euismod. Donec dapibus
                             blandit quam volutpat sollicitudin. Fusce tincidunt sit amet ex in volutpat. Donec lacinia finibus tortor.
@@ -215,8 +235,8 @@ function Appointment(props) {
             </section>
 
         </div>
+
     );
 }
 
-export default Appointment;
-
+export default Addappointment;

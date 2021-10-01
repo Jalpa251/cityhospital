@@ -15,6 +15,10 @@ import Adddoctor from './container/Adddoctor';
 import Addmedicine from './container/Addmedicine';
 import Patient from './container/Patient';
 import Addpatient from './container/Addpatient';
+import Addappointment from './container/Addappointment';
+import AppointmentList from './container/AppointmentList';
+
+
 
 function App() {
   return (
@@ -27,13 +31,15 @@ function App() {
         <Route path="/doctor"component={Doctor}/>
         <Route path="/about" component={About}/>
         <Route path="/contact" component={Contact}/>
-        <Route path="/appointment" component={Appointment}/>
+        <Route path="/appointment" component={Appointment}/>    
         <Route path="/login" component={Login}/>
         <Route path="/medicine" component={Medicine}/>
         <Route path="/adddoctor" component={Adddoctor}/>
         <Route path="/addmedicine" component={Addmedicine}/>
         <Route path="/patient" component={Patient}/>
         <Route path="/addpatient" component={Addpatient}/>
+        <Route path="/addappointment" component={Addappointment}/>
+        <Route path="/appointmentlist" component={AppointmentList}/>
         </Switch>
       <Footer/>
     </>
