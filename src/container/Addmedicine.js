@@ -129,6 +129,8 @@ function Addmedicine(props) {
 
         props.renderProps()
 
+        seteditData({})
+
         alert("update successfully")
 
     }
@@ -176,7 +178,7 @@ function Addmedicine(props) {
 
                                     <div className="col-2">
                                         {
-                                            Object.keys(props.updateProps).length > 0 ?
+                                            Object.keys(editData).length > 0 ?
                                                 <>
                                                     <Button style={{ marginRight: '10px' }, { display: 'none' }} onClick={() => { addInputfield(index); }} >+</Button>
                                                     <Button style={{ display: 'none' }} onClick={() => removeinputField(index)}>-</Button>
@@ -197,8 +199,8 @@ function Addmedicine(props) {
                     }
                     {
 
-                        Object.keys(props.updateProps).length > 0 ?
-                            <Button onClick={(e) => { handleEditSubmit(e); seteditData(true) }} style={{ marginTop: '10px' }}>Update</Button>
+                        Object.keys(editData).length > 0 ?
+                            <Button onClick={(e) => { handleEditSubmit(e) }} style={{ marginTop: '10px' }}>Update</Button>
 
                             :
                             <Button onClick={(e) => handleSubmit(e)} style={{ marginTop: '10px' }}> Submit</Button>
