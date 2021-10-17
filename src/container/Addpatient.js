@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, Input } from 'reactstrap';
 import List from '../component/List';
 
@@ -7,6 +7,14 @@ function Addpatient(props) {
     // const [values,setvalues] = useState()
     const [inputField, setinputField] = useState([
         { name: '', age: '', phone: '', disease: '' }])
+    const [updateData, setUpadateData] = useState({})
+
+    // 
+    useEffect(
+        () => {
+            setUpadateData(props.editProps)
+        },
+      [props.editProps])
 
     const handleChange = (e, index) => {
         const oldData = [...inputField]
@@ -20,7 +28,7 @@ function Addpatient(props) {
         } else if (e.target.name == "disease") {
             oldData[index].disease = e.target.value
         }
-        // console.log(oldData)
+        // 
 
         setinputField(oldData)
     }
@@ -37,32 +45,55 @@ function Addpatient(props) {
 
     }
 
-    const handleSubmit = () => {
-        console.log("ok")
+    const handleSubmit = (e) => {
         const oldData = [...inputField]
-localStorage.removeItem('patient')
-    let patientData =  JSON.parse(localStorage.getItem('patient'))
-    console.log(patientData)
-        console.log(patientData)
-        console.log(patientData.length)
 
-        let n = (patientData.length+100)
-        console.log(n)
-         let s = oldData.map((d)=>({...d,"id":n++}))
-         console.log(s)
-// localStorage.removeItem('patient')
-        s.map((v)=>patientData.push(v))
+        e.preventDefault()
 
-        localStorage.removeItem('patient')
-        localStorage.setItem('patient',JSON.stringify(patientData))
+        
+        let patientData = JSON.parse(localStorage.getItem('patient'))
+        
 
-       let localpatientData = patientData
+        let patientId = (patientData[patientData.length - 1].id + 1)
+        let pushPatientData = oldData.map((o) => ({ ...o, "id": patientId++ }))
+         
 
-       localpatientData = JSON.parse(patientData)
-       console.log(localpatientData)
+        pushPatientData.map((p) => patientData.push(p))
+        
 
 
+        localStorage.setItem('patient', JSON.stringify(patientData))
 
+        alert("add data successfully")
+
+        props.rerenderprops()
+    }
+
+    const handleEdit = (e) => {
+        
+         setUpadateData(values => ({ ...values, [e.target.name]: e.target.value }))
+        
+         console.log(e.target.name , e.target.value)
+    }
+    
+    
+    const handleEditSubmit = () =>{
+        // console.log(updateData)
+            let localPatientData =JSON.parse(localStorage.getItem('patient'))
+            console.log(localPatientData)
+            let editData = localPatientData.map((l)=> {
+            if(updateData.id === l.id){
+                return updateData
+            }
+                return l
+            })
+            localStorage.removeItem('patient')
+            localStorage.setItem('patient',JSON.stringify(editData))
+            
+            alert("data edit successfully")
+            setUpadateData({})
+
+            props.rerenderprops()
     }
 
     return (
@@ -73,10 +104,7 @@ localStorage.removeItem('patient')
                         <h2>Add patient</h2>
                     </div>
                     <div className="row">
-                        {/* {
-                            localpatientData.map((p) => <List name={p.name} age={p.age} phone={p.phone} disease={p.disease} />)
-
-                        } */}
+                        
                     </div>
                     {
 
@@ -85,28 +113,41 @@ localStorage.removeItem('patient')
                                 <div className="row">
 
                                     <div className="col-2">
-                                        <Input type="text" value={i.name} name="name" placeholder="name" onChange={(e) => handleChange(e, index)} />
+                                        <Input type="text" name="name" placeholder="name" value={updateData.name && index == [0] ? updateData.name : i.name}  onChange={(e) =>{updateData.name ? handleEdit(e) : handleChange(e, index)}} style={{marginBottom:'5px'}}/>
                                     </div>
                                     <div className="col-2">
-                                        <Input type="text" name="age" placeholder="age" value={i.age} onChange={(e) => handleChange(e, index)} />
+                                        <Input type="text" name="age" placeholder="age" value={updateData.age  && index == [0]  ? updateData.age : i.age} onChange={(e) =>updateData.age ? handleEdit(e) : handleChange(e, index)} />
                                     </div>
                                     <div className="col-2">
-                                        <Input type="text" name="phone" placeholder="phone" value={i.phone} onChange={(e) => handleChange(e, index)} />
+                                        <Input type="text" name="phone" placeholder="phone" value={updateData.phone  && index == [0]  ? updateData.phone : i.phone} onChange={(e) => updateData.phone? handleEdit(e) : handleChange(e, index)} />
                                     </div>
                                     <div className="col-2">
-                                        <Input type="text" name="disease" placeholder="disease" value={i.disease} onChange={(e) => handleChange(e, index)} />
+                                        <Input type="text" name="disease" placeholder="disease" value={updateData.disease  && index == [0] ? updateData.disease : i.disease} onChange={(e) =>updateData.disease ? handleEdit(e) : handleChange(e, index)} />
                                     </div>
                                     <div className="col-2">
+                                        {
+                                            Object.keys(updateData).length > 0 ?
+                                            null
+                                            :
+                                            <>
                                         <Button style={{ marginRight: '10px' }} onClick={() => handleAdd(index)}>+</Button>
-                                        <Button onClick={() => handleRemove(index)}>-</Button>
+                                        <Button disabled={inputField.length === 1? true : false} onClick={() => handleRemove(index)}>-</Button>
+                                        </>
+                                        }
                                     </div>
                                 </div>
                             )
                         })
 
                     }
-                    <Button style={{ marginTop: '10px' }} onClick={() => handleSubmit()}>Submit</Button>
-
+                    {
+                        Object.keys(updateData).length > 0?
+                        <Button style={{ marginTop: '10px' }} onClick={(e)=>handleEditSubmit(e)}>Update</Button>
+                        :
+                        <Button style={{ marginTop: '10px' }} onClick={(e) => handleSubmit(e)}>Submit</Button>
+    
+                    }
+                    
                 </div>
             </section>
         </div>

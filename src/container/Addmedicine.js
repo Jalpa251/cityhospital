@@ -6,12 +6,12 @@ import { Button, Form, Input } from 'reactstrap';
 
 
 function Addmedicine(props) {
-    const [inputField, setinputField] = useState([
+    const [inputFields, setinputFields] = useState([
         { name: '', price: '', quantity: '', expiry: '' }]);
     const [editData, seteditData] = useState({})
 
 
-    // console.log(props.updateProps)
+    console.log(props.updateProps)
 
     useEffect(
         () => {
@@ -24,7 +24,7 @@ function Addmedicine(props) {
 
         e.preventDefault()
 
-        const values = [...inputField]
+        const values = [...inputFields]
 
         // console.log(values)
 
@@ -48,7 +48,7 @@ function Addmedicine(props) {
 
         // console.log(medicineData)
 
-        setinputField([{ name: '', price: '', quantity: '', expiry: '' }])
+        setinputFields([{ name: '', price: '', quantity: '', expiry: '' }])
 
 
 
@@ -67,7 +67,7 @@ function Addmedicine(props) {
     }
     const handleinputField = (e, index) => {
         console.log("handleinputField")
-        const values = [...inputField]
+        const values = [...inputFields]
 
         if (e.target.name == "name") {
             values[index].name = e.target.value
@@ -79,31 +79,32 @@ function Addmedicine(props) {
             values[index].expiry = parseInt(e.target.value)
         }
         // console.log(values)
-        setinputField(values)
+        setinputFields(values)
     }
     const addInputfield = (index) => {
         // console.log("ok")
-        const values = [...inputField]
+        const values = [...inputFields]
 
         values.splice(index + 1, 0, { name: '', price: '', quantity: '', expiry: '' })
-        setinputField(values)
+        setinputFields(values)
 
     }
     const removeinputField = (index) => {
         // console.log("okeremove")
-        const values = [...inputField]
-       
-        if (index !== 0) {
-            values.splice(index, 1)
-        }
+        const values = [...inputFields]
+
+        values.splice(index, 1)
+        // if (index !== 0) {
+            
+        // }
 
 
-        setinputField(values)
+        setinputFields(values)
     }
 
     const handleEdit = (e) => {
         // console.log("handleEdit")
-        // const values = [...inputField]
+        // const values = [...inputFields]
 
         seteditData(values => ({ ...values, [e.target.name]: e.target.name === "name" ? e.target.value : parseInt(e.target.value) }))
     }
@@ -128,6 +129,7 @@ function Addmedicine(props) {
         // console.log(afterEdit)
 
         props.renderProps()
+    //    props.setRerender()
 
         seteditData({})
 
@@ -135,7 +137,7 @@ function Addmedicine(props) {
 
     }
 
-
+    // console.log(editData)
 
     return (
         <div>
@@ -146,16 +148,14 @@ function Addmedicine(props) {
                     </div>
 
                     {
-                        inputField.map((inputField, index) => {
+                        inputFields.map((inputField, index) => {
 
                             return (
 
                                 <div className="row">
 
                                     <div className="col-2">
-                                        <Input type="text" name="name" placeholder="name"
-
-                                            // {setedit?value={props.updateProps.name}:value={inputField.name} }
+                                        <Input type="text" name="name" placeholder="name" style={{ marginBottom: '7px' }}
                                             value={editData.name && index == [0] ? editData.name : inputField.name}
                                             onChange={(e) => { editData.name ? handleEdit(e) : handleinputField(e, index) }}
                                         />
@@ -179,14 +179,11 @@ function Addmedicine(props) {
                                     <div className="col-2">
                                         {
                                             Object.keys(editData).length > 0 ?
-                                                <>
-                                                    <Button style={{ marginRight: '10px' }, { display: 'none' }} onClick={() => { addInputfield(index); }} >+</Button>
-                                                    <Button style={{ display: 'none' }} onClick={() => removeinputField(index)}>-</Button>
-                                                </>
+                                            null
                                                 :
                                                 <>
                                                     <Button style={{ marginRight: '10px' }} onClick={() => { addInputfield(index); }} >+</Button>
-                                                    <Button onClick={() => removeinputField(index)}>-</Button>
+                                                    <Button disabled={inputFields.length === 1 ? true : false} onClick={() => removeinputField(index)}>-</Button>
                                                 </>
                                         }
                                     </div>

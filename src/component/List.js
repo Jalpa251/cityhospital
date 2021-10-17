@@ -19,7 +19,7 @@ function List(props) {
                             </CardSubtitle>
                             :
                             <CardSubtitle tag="h6" className="mb-2 text-muted">
-                             Email:{props.email}
+                             age:{props.age}
                             </CardSubtitle>
                         }
                         {
@@ -33,7 +33,7 @@ function List(props) {
                             props.expiry != undefined?
                             <CardText>Expiry:{props.expiry}</CardText>
                             :
-                            <CardText>Date:{props.Date}</CardText>
+                            <CardText>Disease:{props.disease}</CardText>
 
                         }
                         
@@ -45,13 +45,13 @@ function List(props) {
                             props.onDelete != undefined?
                             <Button style={{marginRight:'10px'}} onClick={()=>props.onDelete() }>Delete</Button>
                             :
-                            <Button style={{marginRight:'10px'}}>Delete</Button>
+                            <Button style={{marginRight:'10px'}} onClick={()=>props.onDelete()}>Delete</Button>
                         }
                         {
                             props.onEdit != undefined?
                             <Button onClick={()=>props.onEdit()}>Edit</Button>
                             :
-                            <Button>Edit</Button>
+                            <Button onClick={()=>props.onEdit()}>Edit</Button>
                         }
                         
                     </CardBody>

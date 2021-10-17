@@ -1769,5 +1769,13 @@ section {
   position: relative;
   top:37px;
   left:-10px;
- 
+}
+.review_button{
+  background-color: #FF6337;
+  outline: none;
+  border: 0;
+  padding: 10px 35px;
+  color: #fff;
+  transition: 0.4s;
+  border-radius: 50px
 }

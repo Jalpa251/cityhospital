@@ -5,54 +5,6 @@ import { NavLink } from 'react-router-dom';
 import Addmedicine from './Addmedicine';
 import { Button, Input } from 'reactstrap';
 
-// const orgData = [
-//     {
-//         id: 101,
-//         name: "Abacavir",
-//         quantity: 69,
-//         price: 900,
-//         expiry: 2020,
-//     },
-//     {
-//         id: 102,
-//         name: "Busulfan",
-//         quantity: 50,
-//         price: 250,
-//         expiry: 2021,
-//     },
-//     {
-//         id: 103,
-//         name: "Captopril",
-//         quantity: 34,
-//         price: 480,
-//         expiry: 2022,
-//     },
-//     {
-//         id: 104,
-//         name: "Dasatinib",
-//         quantity: 99,
-//         price: 100,
-//         expiry: 2023,
-//     },
-//     {
-//         id: 105,
-//         name: "Efavirenz",
-//         quantity: 100,
-//         price: 670,
-//         expiry: 2024,
-//     },
-//     {
-//         id: 106,
-//         name: "Famciclovir",
-//         quantity: 46,
-//         price: 300,
-//         expiry: 2025,
-//     }
-// ]
-
-
-
-
 function Medicine(props) {
 
     const orgData = [
@@ -101,10 +53,14 @@ function Medicine(props) {
     ]
 
 
-    const [search, setsearch] = useState('')
+    // const [search, setsearch] = useState('')
     const [render, setReRender] = useState([{}])
     const [update, setupdate] = useState({})
     const [data, setData] = useState([{}])
+    const [searchData, setSearchData] = useState()
+    const [sortData, setSortData] = useState()
+    const [sort, setSort] = useState()
+
 
     useEffect(
         () => {
@@ -112,7 +68,7 @@ function Medicine(props) {
         },
 
         [])
-    //localStorage.removeItem('medicine')
+
     const loadData = () => {
 
 
@@ -127,45 +83,60 @@ function Medicine(props) {
             localmedicineData = JSON.parse(medicineData)
 
         }
-
-
         setData(localmedicineData)
         // console.log(localmedicineData)
-
     }
 
 
     const handleSearch = (e) => {
-        // console.log(e.target.value)
-        
+        console.log(e.target.value)
+
         if (e.target.value !== '') {
-            let afterSearch = data.filter((d)=> 
+            let afterSearch = data.filter((d) =>
                 d.name.toLowerCase().includes(e.target.value) ||
                 d.price.toString().includes(e.target.value) ||
                 d.quantity.toString().includes(e.target.value) ||
                 d.expiry.toString().includes(e.target.value)
             )
-            
-            //loadData(afterSearch)
-            // console.log(afterSearch) 
-            setData(afterSearch)
+
+            setSearchData(afterSearch)
+
         } else {
+            setSearchData()
+            setSortData()
             loadData()
+            handleSort('', "yes")
+
         }
-        
-        
     }
 
+    const handleSort = (e = '', status = '') => {
 
-    // let filterData = localmedicineData.filter((m) =>
-    //     m.name.toLowerCase().includes(search.toLowerCase()) ||
-    //     m.price.toString().includes(search.toString()) ||
-    //     m.quantity.toString().includes(search.toString()) ||
-    //     m.expiry.toString().includes(search.toString()))
+        let val = e === '' ? sort : e.target.value
 
-    // if (search == '') {
-    //     filterData = localmedicineData
-    // }
+        setSort(val)
+
+        let afterData = searchData && status === "" ? searchData : data
+
+        let afterSort = afterData.sort((a, b) => {
+            if (val === "hl") {
+                return a.price < b.price ? 1 : -1
+            } else if (val === "lh") {
+                return a.price > b.price ? 1 : -1
+            } else if (val === "name") {
+                return a.name.localeCompare(b.name)
+            } else if (val === "quantity") {
+                return a.quantity > b.quantity ? 1 : -1
+            } else if (val === "expiry") {
+                return a.expiry > b.expiry ? 1 : -1
+            }
+        })
+
+        setSortData(afterSort)
+
+        setReRender({})
+
+    }
 
     const handleReRender = () => {
         setReRender({})
@@ -187,8 +158,10 @@ function Medicine(props) {
 
         let afterEdit = data.filter((d) => d.id === id)
         setupdate(afterEdit[0])
-
     }
+
+    let finalsearchData = searchData ? searchData : sortData ? sortData : data
+    console.log(finalsearchData)
 
 
     return (
@@ -202,13 +175,14 @@ function Medicine(props) {
 
                     <Addmedicine updateProps={update} renderProps={() => handleReRender()} />
                     <div className="col-md-6 form-group mt-3 mt-md-0">
-                        <input type="text" name="name" className="form-control" id="name" placeholder="Serch here" onChange={(e) => handleSearch(e)} />
+                        <input type="search" name="name" className="form-control" placeholder="Serch here" onChange={(e) => handleSearch(e)} />
                     </div>
+
                     <div className="col-md-6 form-group mt-3 mt-md-0">
-                        <Input type="select" name="select" id="exampleSelect" placeholder="sort here" onChange={(e) => (e.target.value)}>
-                            <option value="">Sort here</option>
-                            <option value="price low to high"> price low to high</option>
-                            <option value="price high to low">price high to low</option>
+                        <Input type="select" name="select" id="exampleSelect" placeholder="sort here" onChange={(e) => handleSort(e)}>
+                            <option value="">---Sort---</option>
+                            <option value="lh"> price low to high</option>
+                            <option value="hl">price high to low</option>
                             <option value="name">name</option>
                             <option value="quantity">quantity</option>
                             <option value="expiry">expiry</option>
@@ -218,7 +192,11 @@ function Medicine(props) {
                 <div className="row">
 
                     {
-                        data.map((m, index) => <List onDelete={() => handleDelete(m.id)} onEdit={() => handleEdit(m.id)} name={m.name} quantity={m.quantity} price={m.price} expiry={m.expiry} />)
+
+
+                        finalsearchData.map((m, index) => <List onDelete={() => handleDelete(m.id)} onEdit={() => handleEdit(m.id)} name={m.name} quantity={m.quantity} price={m.price} expiry={m.expiry} />)
+
+
                     }
                 </div>
 

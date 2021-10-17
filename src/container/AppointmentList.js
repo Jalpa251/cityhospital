@@ -1,4 +1,5 @@
 import React from 'react';
+import { NavLink } from 'react-router-dom';
 import List from '../component/List';
 
 
@@ -16,6 +17,8 @@ function AppointmentList(props) {
                 <div className="container">
                     <div className="section-title">
                         <h2>Appointment List</h2>
+                        <NavLink to={{pathname:'addappointment'}} style={{marginRight:'20px'}}>Addppointment</NavLink>
+                        <NavLink to={{pathname:'appointmentlist'}}>AppointmentList</NavLink>
                         {/* <div className="text-center"><NavLink to="/addpatient">addpatient</NavLink></div>  */}
                     </div>
                     <div className="row">

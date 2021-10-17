@@ -143,7 +143,7 @@ function Appointment(props) {
                 <div className="container">
                     <div className="section-title">
                         <h2>Manage an Appointment</h2>
-                        <NavLink to="addappointment" style={{paddingRight:'30px'}}>Addappointment</NavLink>
+                        <NavLink to={{pathname:'addappointment'}} style={{paddingRight:'30px'}}>Addappointment</NavLink>
                         <NavLink to="appointmentlist">AppointmentList</NavLink>
                         <p>Aenean enim orci, suscipit vitae sodales ac, semper in ex. Nunc aliquam eget nibh eu euismod. Donec dapibus
                             blandit quam volutpat sollicitudin. Fusce tincidunt sit amet ex in volutpat. Donec lacinia finibus tortor.

@@ -90,24 +90,24 @@ function Addappointment(props) {
     const submitData = (e) => {
         e.preventDefault()
 
-        console.log(values)
+        // console.log(values)
 
-        let appointmentData = values
-        console.log(appointmentData)
+        // let appointmentData = values
+        // console.log(appointmentData)
 
-        let arrayAppointment = Object.fromEntries(appointmentData)
-        console.log(arrayAppointment)
+        // let arrayAppointment = Object.fromEntries(appointmentData)
+        // console.log(arrayAppointment)
 
-        let localAppointment = localStorage.getItem('appointment')
+        // let localAppointment = localStorage.getItem('appointment')
+        // // console.log(setAppointment)
+
+        // localStorage.setItem('appointment', JSON.stringify(appointmentData))
+
+        // let setAppointment = appointmentData
+
+        // setAppointment = JSON.parse(localAppointment)
+
         // console.log(setAppointment)
-
-        localStorage.setItem('appointment', JSON.stringify(appointmentData))
-
-        let setAppointment = appointmentData
-
-        setAppointment = JSON.parse(localAppointment)
-
-        console.log(setAppointment)
 
         
 
@@ -145,6 +145,17 @@ function Addappointment(props) {
         if ((nameErr || emailErr || mobileErr || dateErr || departmentErr || messageErr) == true) {
             return false
         } else {
+            // console.log(values)
+            // console.log(values,"email")
+            // console.log(values,"mobile")
+            // console.log(values,"date")
+            // console.log(values,"department")
+            // console.log(values,"message")
+            let beforeSetData = localStorage.getItem('value')
+            localStorage.setItem('value',JSON.stringify(values))
+
+            let afterSetData = JSON.parse(beforeSetData)
+            console.log(afterSetData)
             return true
         }
 
@@ -211,9 +222,10 @@ function Addappointment(props) {
                             <div className="col-md-4 form-group mt-3">
                                 <select name="department" id="department" className="form-select" onChange={(e) => handlechanges(e)}>
                                     <option value="0">Select Department</option>
-                                    <option value="Department 1">Department 1</option>
-                                    <option value="Department 2">Department 2</option>
-                                    <option value="Department 3">Department 3</option>
+                                    <option value="Department 1">Cancer</option>
+                                    <option value="Department 2">Physiotherapy</option>
+                                    <option value="Department 3">Dental</option>
+                                    <option value="Department 3">Neurosurgery</option>
                                 </select>
                                 <p className="errmsg">{Error.date != undefined ? Error.department : ''}</p>
                                 <div className="validate" />

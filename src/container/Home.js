@@ -1,9 +1,53 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { FaHanukiah } from 'react-icons/fa';
+import Addpopup from './Addpopup';
+import Popup from './Addpopup';
+import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Input } from 'reactstrap';
+
+
+
 
 function Home(props) {
+    const {
+        buttonLabel,
+        className
+    } = props;
+
+    const [modal, setModal] = useState(false);
+    const [inputField, setInputField] = useState()
+    const [data,setData] = useState()
+
+    const handleChange = (e, index) => {
+        console.log(e.target.value)
+
+        setInputField(inputField => ({ ...inputField, [e.target.name]: e.target.value }))
+
+        console.log(inputField)
+
+
+
+    }
+    const handleSubmit = () => {
+        console.log(inputField)
+
+        // const values = [...inputField]
+        // console.log(values)
+        let localInputData = localStorage.getItem('input')
+        console.log(localInputData)
+        localStorage.setItem('input', JSON.stringify(inputField))
+        // console.log(setInputData)
+        let afterStoreData = JSON.parse(localInputData)
+        // console.log(afterStoreData)
+
+        setData(afterStoreData)
+
+    }
+    console.log(data)
+    const toggle = () => setModal(!modal);
     return (
         <div>
             <div>
+
                 <section id="hero" className="d-flex align-items-center">
                     <div className="container">
                         <h1>Welcome to City <br />Multispeciality Hospital</h1>
@@ -104,7 +148,26 @@ function Home(props) {
                     <section id="testimonials" className="testimonials">
                         <div className="container">
                             <div className="section-title"><h2>Reviews</h2></div>
-                            <div className="testimonials-slider swiper-container" data-aos="fade-up" data-aos-delay={100}>
+                            {/* */}
+                            {/* <Addpopup addReview={()=>handleReview()}/>  */}
+                            <div>
+                                <div className="text-center"><button className="review_button" onClick={toggle}>Add Review</button></div>
+                                {/* <Button color="danger" onClick={toggle}>{buttonLabel}</Button> */}
+                                <Modal isOpen={modal} toggle={toggle} className={className}>
+                                    <ModalHeader toggle={toggle}>Write your Review</ModalHeader>
+                                    <ModalBody>
+                                        <Input type="text" name="name" placeholder="Enter your name" onChange={(e) => handleChange(e)} style={{ marginBottom: '8px' }} />
+                                        <Input type="text" name="designation" placeholder="Enter your Designation" onChange={(e) => handleChange(e)} style={{ marginBottom: '8px' }} />
+                                        <Input type="text" name="review" placeholder="Add your Review" onChange={(e) => handleChange(e)} />
+                                    </ModalBody>
+                                    <ModalFooter>
+                                        <Button className="review_button" onClick={() => handleSubmit()}>Add Review</Button>{' '}
+                                        <Button color="secondary" onClick={toggle}>Cancel</Button>
+                                    </ModalFooter>
+                                </Modal>
+                            </div>
+                               
+                            < div className="testimonials-slider swiper-container" data-aos="fade-up" data-aos-delay={100}>
                                 <div className="swiper-wrapper">
                                     <div className="swiper-slide">
                                         <div className="testimonial-wrap">
@@ -190,6 +253,7 @@ function Home(props) {
                                     </div>
                                 </div>
                             </div>
+                            
                         </div>
                     </section>
                     <section id="gallery" className="gallery">
@@ -265,7 +329,7 @@ function Home(props) {
                 </main>
             </div>
 
-        </div>
+        </div >
     );
 }
 
