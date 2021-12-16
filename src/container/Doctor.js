@@ -1,7 +1,10 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-
+import { useDispatch, useSelector } from 'react-redux';
 function Doctor(props) {
+    const dispatch = useDispatch();
+    const Counter = useSelector (state => state.CounterReducer);
+
     return (
         <div>
             <section id="doctors" className="doctors">

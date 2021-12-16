@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Input } from 'reactstrap';
 import List from '../component/List';
-
+import {useDispatch} from 'react-redux'
+import { addPatients } from '../redux/actions/patient.action';
 
 function Addpatient(props) {
+    const dispatch = useDispatch()
     // const [values,setvalues] = useState()
     const [inputField, setinputField] = useState([
         { name: '', age: '', phone: '', disease: '' }])
@@ -49,24 +51,10 @@ function Addpatient(props) {
         const oldData = [...inputField]
 
         e.preventDefault()
+            dispatch(addPatients(inputField))
+          
 
-        
-        let patientData = JSON.parse(localStorage.getItem('patient'))
-        
-
-        let patientId = (patientData[patientData.length - 1].id + 1)
-        let pushPatientData = oldData.map((o) => ({ ...o, "id": patientId++ }))
-         
-
-        pushPatientData.map((p) => patientData.push(p))
-        
-
-
-        localStorage.setItem('patient', JSON.stringify(patientData))
-
-        alert("add data successfully")
-
-        props.rerenderprops()
+       
     }
 
     const handleEdit = (e) => {

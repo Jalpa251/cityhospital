@@ -1,0 +1,104 @@
+{
+  "medicine": [
+    {
+      "id": 101,
+      "name": "Busulfan",
+      "quantity": 50,
+      "price": 250,
+      "expiry": 2021
+    },
+    {
+      "id": 102,
+      "name": "Dasatinib1",
+      "quantity": 991,
+      "price": 1001,
+      "expiry": 20231
+    },
+    {
+      "name": "Busulfan",
+      "price": 34,
+      "quantity": 100,
+      "expiry": 2021,
+      "id": 107
+    },
+    {
+      "name": "r",
+      "price": 64,
+      "quantity": 200,
+      "expiry": 2029,
+      "id": 110
+    },
+    {
+      "name": "fg",
+      "price": 852,
+      "quantity": 400,
+      "expiry": 2028,
+      "id": 109
+    },
+    {
+      "name": "rty",
+      "price": 342,
+      "quantity": 90,
+      "expiry": 2029,
+      "id": 112
+    },
+    {
+      "name": "rty",
+      "price": 342,
+      "quantity": 90,
+      "expiry": 2029,
+      "id": 113
+    }
+  ],
+  "patient": [
+    {
+      "id": 101,
+      "name": "Smith Carter",
+      "age": 28,
+      "phone": 1234567890,
+      "disease": "Asthma"
+    },
+    {
+      "id": 102,
+      "name": "Harry Potter",
+      "age": 38,
+      "phone": 4567894321,
+      "disease": "Influenza"
+    },
+    {
+      "id": 103,
+      "name": "Tonny Stark",
+      "age": 35,
+      "phone": 7896540654,
+      "disease": "Malaria"
+    },
+    {
+      "name": "r",
+      "age": 12,
+      "phone": 8140751850,
+      "disease": "cough",
+      "id": 104
+    },
+    {
+      "name": "a",
+      "age": 23,
+      "phone": 1234567890,
+      "disease": "colera",
+      "id": 105
+    },
+    {
+      "name": "fg",
+      "age": 24,
+      "phone": 8140751850,
+      "disease": "covid",
+      "id": 107
+    },
+    {
+      "name": "fg",
+      "age": 24,
+      "phone": 8140751850,
+      "disease": "covid",
+      "id": 108
+    }
+  ]
+}

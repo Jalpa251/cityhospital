@@ -2,35 +2,38 @@ import React, { useEffect, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import { Input } from 'reactstrap';
 import List from '../component/List';
+import {useDispatch,useSelector} from 'react-redux'
+import { deletePatients, fetchPatients } from '../redux/actions/patient.action';
 import Addpatient from './Addpatient';
+import { deleteMedicine } from '../redux/actions/medicine.action';
 
 
 
 function Patient(props) {
-    const oldData = [
-        {
-            id: 101,
-            name: "Smith Carter",
-            age: 28,
-            phone: 1234567890,
-            disease: "Asthma"
+    // const oldData = [
+    //     {
+    //         id: 101,
+    //         name: "Smith Carter",
+    //         age: 28,
+    //         phone: 1234567890,
+    //         disease: "Asthma"
 
-        },
-        {
-            id: 102,
-            name: "Harry Potter",
-            age: 38,
-            phone: 4567894321,
-            disease: "Influenza"
-        },
-        {
-            id: 103,
-            name: "Tonny Stark",
-            age: 35,
-            phone: 7896540654,
-            disease: "Malaria"
-        }
-    ]
+    //     },
+    //     {
+    //         id: 102,
+    //         name: "Harry Potter",
+    //         age: 38,
+    //         phone: 4567894321,
+    //         disease: "Influenza"
+    //     },
+    //     {
+    //         id: 103,
+    //         name: "Tonny Stark",
+    //         age: 35,
+    //         phone: 7896540654,
+    //         disease: "Malaria"
+    //     }
+    // ]
 
 
     const [rerender, SetreRender] = useState([{}])
@@ -40,39 +43,46 @@ function Patient(props) {
     const [sortData,setSortData] = useState()
     const [sort,setSort] = useState()
 
+    const dispatch = useDispatch()
+    const patient = useSelector(state=>state.Patientes)
+    console.log(patient.patients)
+
     useEffect(
         () => {
-            loadData()
+            //  // loadData()
+            dispatch(fetchPatients)
         }
         , [])
+        console.log(patient)
 
-    const loadData = () => {
-        let patientData = localStorage.getItem('patient')
+    // const loadData = () => {
+    //     let patientData = localStorage.getItem('patient')
 
-        let localPatientData;
-        if (patientData == null) {
-            localStorage.setItem('patient', JSON.stringify(oldData))
-            localPatientData = oldData
-        } else {
-            localPatientData = JSON.parse(patientData)
-        }
-        // console.log(localPatientData)
-        setData(localPatientData)
-    }
+    //     let localPatientData;
+    //     if (patientData == null) {
+    //         localStorage.setItem('patient', JSON.stringify(oldData))
+    //         localPatientData = oldData
+    //     } else {
+    //         localPatientData = JSON.parse(patientData)
+    //     }
+    //     // console.log(localPatientData)
+    //     setData(localPatientData)
+    // }
     // console.log(data)
 
     const handleReRender = () => {
         SetreRender({})
-        loadData()
+        // loadData()
     }
 
     const handleDelete = (id) => {
-        let afterDelete = data.filter((p) => p.id !== id)
-        localStorage.removeItem('patient')
-        localStorage.setItem('patient', JSON.stringify(afterDelete))
+        dispatch(deletePatients(id))
+        // let afterDelete = data.filter((p) => p.id !== id)
+        // localStorage.removeItem('patient')
+        // localStorage.setItem('patient', JSON.stringify(afterDelete))
 
-        alert('deleta data successfully')
-        handleReRender({})
+        // alert('deleta data successfully')
+        // handleReRender({})
 
     }
     const handleEdit = (id) => {
@@ -96,7 +106,7 @@ function Patient(props) {
             ))
             setSearchData(afterSearch)
         } else {
-            loadData()
+            // loadData()
             setSearchData()
             setSortData()
             handleSort('',"yes")
@@ -136,7 +146,7 @@ function Patient(props) {
                     </div>
                     <div className="row">
 
-                        <Addpatient editProps={editData} rerenderprops={() => handleReRender()} />
+                        <Addpatient editProps={editData} />
                         <div className="col-md-6 form-group mt-3 mt-md-0">
                             <Input type="search" name="name" className="form-control" id="name" placeholder="Serch here" onChange={(e) => handleSearch(e)} />
                         </div>
@@ -157,7 +167,7 @@ function Patient(props) {
 
                         { 
                             
-                            afterSearchData.map((p) => <List onDelete={() => handleDelete(p.id)} onEdit={() => handleEdit(p.id)} name={p.name} age={p.age} phone={p.phone} disease={p.disease} />)
+                            patient.patients.map((p) => <List onDelete={() => handleDelete(p.id)} onEdit={() => handleEdit(p.id)} name={p.name} age={p.age} phone={p.phone} disease={p.disease} />)
                         }
                     </div>
                 </div>

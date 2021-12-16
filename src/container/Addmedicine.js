@@ -2,6 +2,10 @@
 import React, { useEffect, useState, version } from 'react';
 import List from '../component/List';
 import { Button, Form, Input } from 'reactstrap';
+import { addMedicine, editMedicine } from '../redux/actions/medicine.action';
+import { useDispatch, useSelector } from 'react-redux';
+import { Medicines } from '../redux/reducers/medicine.reducer';
+
 
 
 
@@ -9,8 +13,8 @@ function Addmedicine(props) {
     const [inputFields, setinputFields] = useState([
         { name: '', price: '', quantity: '', expiry: '' }]);
     const [editData, seteditData] = useState({})
-
-
+    const dispatch = useDispatch()
+    const medicine = useSelector(state => state.Medicines)
     console.log(props.updateProps)
 
     useEffect(
@@ -20,50 +24,10 @@ function Addmedicine(props) {
         , [props.updateProps])
 
     const handleSubmit = (e) => {
-
-
         e.preventDefault()
-
         const values = [...inputFields]
-
-        // console.log(values)
-
-        // localStorage.removeItem('medicine')
-        let medicineData = JSON.parse(localStorage.getItem('medicine'))
-
-        // console.log(medicineData)
-
-        // console.log(medicineData.length-1)
-
-        // console.log(medicineData[medicineData.length-1])
-
-        // console.log(medicineData[medicineData.length-1].id+1)
-
-        let n = (medicineData[medicineData.length - 1].id + 1)
-
-        let s = values.map((d) => ({ ...d, "id": n++ }))
-        // console.log(s)
-
-        s.map((v) => medicineData.push(v))
-
-        // console.log(medicineData)
-
-        setinputFields([{ name: '', price: '', quantity: '', expiry: '' }])
-
-
-
-        localStorage.setItem('medicine', JSON.stringify(medicineData))
-
-        let localmedicineData = medicineData
-        // localmedicineData  = JSON.parse(medicineData)
-        console.log(localmedicineData)
-
-        props.renderProps()
-
-        alert("data is successfully added")
-
-        // seteditData({})
-
+        dispatch(addMedicine(inputFields))
+        
     }
     const handleinputField = (e, index) => {
         console.log("handleinputField")
@@ -90,54 +54,22 @@ function Addmedicine(props) {
 
     }
     const removeinputField = (index) => {
-        // console.log("okeremove")
         const values = [...inputFields]
 
         values.splice(index, 1)
-        // if (index !== 0) {
-            
-        // }
-
-
         setinputFields(values)
     }
 
     const handleEdit = (e) => {
-        // console.log("handleEdit")
-        // const values = [...inputFields]
-
         seteditData(values => ({ ...values, [e.target.name]: e.target.name === "name" ? e.target.value : parseInt(e.target.value) }))
     }
 
-    // console.log(editData)
+
 
     const handleEditSubmit = () => {
-        // console.log(editData)
-
-        let localmedicineData = JSON.parse(localStorage.getItem('medicine'))
-        console.log(localmedicineData)
-
-        let afterEdit = localmedicineData.map((l) => {
-            if (editData.id === l.id) {
-                return editData
-            }
-            return l
-        })
-
-        localStorage.removeItem('medicine')
-        localStorage.setItem('medicine', JSON.stringify(afterEdit))
-        // console.log(afterEdit)
-
-        props.renderProps()
-    //    props.setRerender()
-
+        dispatch(editMedicine(editData))
         seteditData({})
-
-        alert("update successfully")
-
     }
-
-    // console.log(editData)
 
     return (
         <div>
@@ -179,7 +111,7 @@ function Addmedicine(props) {
                                     <div className="col-2">
                                         {
                                             Object.keys(editData).length > 0 ?
-                                            null
+                                                null
                                                 :
                                                 <>
                                                     <Button style={{ marginRight: '10px' }} onClick={() => { addInputfield(index); }} >+</Button>

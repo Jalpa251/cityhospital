@@ -4,95 +4,33 @@ import { FaBeer, FaSearch } from 'react-icons/fa';
 import { NavLink } from 'react-router-dom';
 import Addmedicine from './Addmedicine';
 import { Button, Input } from 'reactstrap';
-
+import { useDispatch, useSelector } from 'react-redux';
+import {deleteMedicine, editMedicine, fetchMedicines} from '../redux/actions/medicine.action'
 function Medicine(props) {
-
-    const orgData = [
-        {
-            id: 101,
-            name: "Abacavir",
-            quantity: 69,
-            price: 900,
-            expiry: 2020,
-        },
-        {
-            id: 102,
-            name: "Busulfan",
-            quantity: 50,
-            price: 250,
-            expiry: 2021,
-        },
-        {
-            id: 103,
-            name: "Captopril",
-            quantity: 34,
-            price: 480,
-            expiry: 2022,
-        },
-        {
-            id: 104,
-            name: "Dasatinib",
-            quantity: 99,
-            price: 100,
-            expiry: 2023,
-        },
-        {
-            id: 105,
-            name: "Efavirenz",
-            quantity: 100,
-            price: 670,
-            expiry: 2024,
-        },
-        {
-            id: 106,
-            name: "Famciclovir",
-            quantity: 46,
-            price: 300,
-            expiry: 2025,
-        }
-    ]
-
-
-    // const [search, setsearch] = useState('')
-    const [render, setReRender] = useState([{}])
     const [update, setupdate] = useState({})
     const [data, setData] = useState([{}])
     const [searchData, setSearchData] = useState()
     const [sortData, setSortData] = useState()
     const [sort, setSort] = useState()
 
+    const dispatch = useDispatch()
+    const medicine = useSelector(state =>state.Medicines)
+ 
 
     useEffect(
         () => {
-            loadData()
+           
+            dispatch(fetchMedicines())
         },
 
         [])
+        console.log(medicine.medicines)
 
-    const loadData = () => {
-
-
-        let medicineData = localStorage.getItem('medicine')
-        let localmedicineData;
-
-        if (medicineData == null) {
-            localStorage.setItem('medicine', JSON.stringify(orgData))
-
-            localmedicineData = orgData
-        } else {
-            localmedicineData = JSON.parse(medicineData)
-
-        }
-        setData(localmedicineData)
-        // console.log(localmedicineData)
-    }
-
-
-    const handleSearch = (e) => {
+        const handleSearch = (e) => {
         console.log(e.target.value)
 
         if (e.target.value !== '') {
-            let afterSearch = data.filter((d) =>
+            let afterSearch = medicine.medicines.filter((d) =>
                 d.name.toLowerCase().includes(e.target.value) ||
                 d.price.toString().includes(e.target.value) ||
                 d.quantity.toString().includes(e.target.value) ||
@@ -104,9 +42,7 @@ function Medicine(props) {
         } else {
             setSearchData()
             setSortData()
-            loadData()
-            handleSort('', "yes")
-
+           handleSort('', "yes")
         }
     }
 
@@ -116,7 +52,7 @@ function Medicine(props) {
 
         setSort(val)
 
-        let afterData = searchData && status === "" ? searchData : data
+        let afterData = searchData && status === "" ? searchData : medicine.medicines
 
         let afterSort = afterData.sort((a, b) => {
             if (val === "hl") {
@@ -133,34 +69,17 @@ function Medicine(props) {
         })
 
         setSortData(afterSort)
-
-        setReRender({})
-
     }
-
-    const handleReRender = () => {
-        setReRender({})
-        loadData()
-    }
-
     const handleDelete = (id) => {
-
-        let afterDelete = data.filter((d) => d.id !== id)
-        localStorage.removeItem('medicine')
-        localStorage.setItem('medicine', JSON.stringify(afterDelete))
-
-        alert('delete successfully')
-        handleReRender()
-
+         dispatch(deleteMedicine(id))
     }
 
     const handleEdit = (id) => {
-
-        let afterEdit = data.filter((d) => d.id === id)
+        let afterEdit = medicine.medicines.filter((d) => d.id === id)
         setupdate(afterEdit[0])
     }
 
-    let finalsearchData = searchData ? searchData : sortData ? sortData : data
+    let finalsearchData = searchData ? searchData : sortData ? sortData : medicine.medicines
     console.log(finalsearchData)
 
 
@@ -173,7 +92,7 @@ function Medicine(props) {
                 <div className="row">
 
 
-                    <Addmedicine updateProps={update} renderProps={() => handleReRender()} />
+                    <Addmedicine updateProps={update}  />
                     <div className="col-md-6 form-group mt-3 mt-md-0">
                         <input type="search" name="name" className="form-control" placeholder="Serch here" onChange={(e) => handleSearch(e)} />
                     </div>
@@ -192,11 +111,7 @@ function Medicine(props) {
                 <div className="row">
 
                     {
-
-
-                        finalsearchData.map((m, index) => <List onDelete={() => handleDelete(m.id)} onEdit={() => handleEdit(m.id)} name={m.name} quantity={m.quantity} price={m.price} expiry={m.expiry} />)
-
-
+                         finalsearchData.map((m, index) => <List onDelete={() => handleDelete(m.id)} onEdit={() => handleEdit(m.id)} name={m.name} quantity={m.quantity} price={m.price} expiry={m.expiry} />)
                     }
                 </div>
 

@@ -36,7 +36,9 @@ function Header(props) {
                                 <li><NavLink className="nav-link scrollto"  to="/contact">Contact</NavLink></li>
                                 <li><NavLink className="nav-link scrollto"  to="/medicine">Medicine</NavLink></li>
                                 <li><NavLink className="nav-link scrollto" to="/patient">Patient</NavLink></li>
-                                
+                                {/* <li><NavLink className="nav-link scrollto" to="/count">Count</NavLink></li> */}
+                                <li><NavLink className="nav-link scrollto" to="/count">Count</NavLink></li>
+
                             </ul>
                             <i className="bi bi-list mobile-nav-toggle" />
                         </nav>
